@@ -1,26 +1,23 @@
 const express = require("express");
 
 const app = express();
-app.get("/health-checkup", function (req, res) {
-  const username = req.headers.username;
-  const pass = req.headers.password;
-  console.log(username, pass);
-  const kidneyid = req.query.kidneyId;
-  console.log(kidneyid);
-  if (username != "abhi" || pass != "pass") {
-    res.json({
-      msg: "Invilid user Auth",
-    });
-    return;
-  } else if (kidneyid != 1 || kidneyid != 2) {
-    res.json({
-      msg: "Wrong input",
-    });
 
-    return;
-  }
+// Global middleware
+app.use(express.json());
+
+app.post("/health-checkup", function (req, res) {
+  const kidney = req.body.kidneys;
+  const kidneyLength = kidney.length;
+
   res.json({
-    msg: "Your Kidney is fine",
+    "msg ": `Total number of kidneys ${kidneyLength}`,
+  });
+});
+
+// Global catch
+app.use(function (err, req, res, next) {
+  res.json({
+    msg: "Something went wrong",
   });
 });
 app.listen(3000);
