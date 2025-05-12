@@ -1,23 +1,17 @@
 const express = require("express");
-
+const zod = require("zod");
 const app = express();
 
-// Global middleware
+const schema = zod.array(zod.number());
+
 app.use(express.json());
 
 app.post("/health-checkup", function (req, res) {
   const kidney = req.body.kidneys;
-  const kidneyLength = kidney.length;
+  const response = schema.safeParse(kidney);
 
-  res.json({
-    "msg ": `Total number of kidneys ${kidneyLength}`,
-  });
-});
-
-// Global catch
-app.use(function (err, req, res, next) {
-  res.json({
-    msg: "Something went wrong",
+  res.send({
+    response,
   });
 });
 app.listen(3000);
