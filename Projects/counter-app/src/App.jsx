@@ -1,26 +1,62 @@
 import { useState } from "react";
+
 function App() {
-  const [count, setCount] = useState(0);
-  // function onClickHander() {
-  //   setCount(count + 1);
-  // }
+  const [todos, setTodos] = useState([
+    {
+      title: "Todo1",
+      description: "Going to gym at 8-10pm",
+      Completed: true,
+    },
+    {
+      title: "Todo2",
+      description: "Sloving the DSA problem at 10-12",
+      Completed: true,
+    },
+    {
+      title: "Todo3",
+      description: "Leaning the Cohort 10-4",
+      Completed: false,
+    },
+  ]);
+
+  function addTodo() {
+    setTodos([
+      ...todos,
+      {
+        title: "addtodo",
+        description: "Sloving the DSA problem at 10-12",
+        Completed: true,
+      },
+    ]);
+  }
+  console.log(todos);
   return (
     <>
-      <CustomButton count={count} setCount={setCount}></CustomButton>
+      {todos.map((eachTodo) => {
+        return (
+          <>
+            <Todos
+              title={eachTodo.title}
+              description={eachTodo.description}
+              Completed={eachTodo.Completed}
+            />
+          </>
+        );
+      })}
+      <br></br>
+      <br></br>
+      <button onClick={addTodo}>ADD TODOS</button>
     </>
   );
 }
 
-// Create Button component
-function CustomButton(props) {
-  console.log(props);
-
-  function onClickHandler() {
-    props.setCount(props.count + 1);
-  }
+// Todo Component
+function Todos(props) {
   return (
     <>
-      <button onClick={onClickHandler}>Counter - {props.count}</button>
+      <h1>{props.title}</h1>
+      <h3>{props.description}</h3>
+      {props.Completed ? <button>Done</button> : <button>Not Done</button>}
     </>
   );
 }
