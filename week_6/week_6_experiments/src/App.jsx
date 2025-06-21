@@ -2,20 +2,16 @@ import { useState } from "react";
 import Header from "./component/Header";
 
 function App() {
-  const [title, setTitle] = useState("Abhi");
-
-  function handleChange() {
-    const randomNumber = Math.random();
-    setTitle(randomNumber);
-  }
   return (
     <div>
-      <button onClick={handleChange}>Clickme to change the title</button>
-      <Header title={title} />
-      <Header title={`Akhand`} />
-      <Header title={`Akhand2`} />
-      <Header title={`Akhand3`} />
+      <WrapperComponent>Hii there !!!</WrapperComponent>
     </div>
+  );
+}
+
+function WrapperComponent({ children }) {
+  return (
+    <div style={{ border: "2px solid black", padding: "5px" }}>{children}</div>
   );
 }
 
