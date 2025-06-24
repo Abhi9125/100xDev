@@ -3,37 +3,44 @@ import "./App.css";
 
 function App() {
   const [todos, setTodos] = useState({});
-  const [input, setInput] = useState("");
+  const [selectedId, setSelectedId] = useState(1);
+
+  const buttonValue = [1, 2, 3, 4];
 
   useEffect(() => {
     const fetchTodos = async () => {
       const res = await fetch(
-        `http://localhost:8080/todo?id=${parseInt(input)}`
+        `http://localhost:8080/todo?id=${parseInt(selectedId)}`
       );
       const data = await res.json();
-      console.log(data);
       setTodos(data.todo);
     };
     fetchTodos();
-  }, [input]);
+  }, [selectedId]);
 
-  function getInput(e) {
-    setInput(e.target.value);
+  function getValue(e) {
+    setSelectedId(e.target.innerText);
+  }
+
+  function Button({ value }) {
+    return <button onClick={getValue}>{value}</button>;
+  }
+
+  function Todo({ title, description }) {
+    return (
+      <>
+        <h1>{title}</h1>
+        <h4>{description}</h4>
+      </>
+    );
   }
 
   return (
     <>
-      <input onChange={getInput} placeholder="enter"></input>
+      {buttonValue.map((value) => (
+        <Button value={value} />
+      ))}
       <Todo title={todos?.title} description={todos?.description} />
-    </>
-  );
-}
-
-function Todo({ title, description }) {
-  return (
-    <>
-      <h1>{title}</h1>
-      <h4>{description}</h4>
     </>
   );
 }
