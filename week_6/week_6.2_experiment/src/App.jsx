@@ -2,25 +2,29 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState({});
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const res = await fetch("http://localhost:8080/todos");
+      const res = await fetch(
+        `http://localhost:8080/todo?id=${parseInt(input)}`
+      );
       const data = await res.json();
-      console.log(data.todos);
-      setTodos(data.todos);
+      console.log(data);
+      setTodos(data.todo);
     };
     fetchTodos();
-  }, []);
+  }, [input]);
+
+  function getInput(e) {
+    setInput(e.target.value);
+  }
 
   return (
     <>
-      {todos.length === 0
-        ? "loading...."
-        : todos.map((todo) => {
-            return <Todo title={todo.title} description={todo.description} />;
-          })}
+      <input onChange={getInput} placeholder="enter"></input>
+      <Todo title={todos?.title} description={todos?.description} />
     </>
   );
 }
