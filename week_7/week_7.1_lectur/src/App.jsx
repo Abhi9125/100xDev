@@ -1,42 +1,38 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-const LandingPage = lazy(() => import("./component/LandingPage"));
-const DashBoard = lazy(() => import("./component/DashBoard"));
+import React, { useContext, useState } from "react";
+import { ContextCount } from "./ContextCreate";
 
-function App() {
+export default function App() {
+  const [count, setCount] = useState(0);
+
   return (
-    <BrowserRouter>
-      <AppBar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Suspense fallback={"loading...."}>
-              <LandingPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="/dash"
-          element={
-            <Suspense fallback={"loading...."}>
-              <DashBoard />
-            </Suspense>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <ContextCount.Provider value={count}>
+        <Count count={count} setCount={setCount} />
+      </ContextCount.Provider>
+    </div>
   );
 }
 
-function AppBar() {
-  const navigate = useNavigate();
+function Count({ setCount }) {
+  return (
+    <div>
+      <CountRenderer />
+      <Button setCount={setCount} />
+    </div>
+  );
+}
+
+function CountRenderer() {
+  const count = useContext(ContextCount);
+  return <div>{count}</div>;
+}
+
+function Button({ setCount }) {
+  const count = useContext(ContextCount);
   return (
     <>
-      <button onClick={() => navigate("/")}>Langing Page</button>
-      <button onClick={() => navigate("/dash")}>DashBoard</button>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
     </>
   );
 }
-
-export default App;
