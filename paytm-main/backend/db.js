@@ -5,7 +5,7 @@ mongoose.connect(
 );
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  userName: String,
   password: String,
   firstName: String,
   lastName: String,
