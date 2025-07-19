@@ -5,12 +5,44 @@ mongoose.connect(
 );
 
 const userSchema = new mongoose.Schema({
-  userName: String,
-  password: String,
-  firstName: String,
-  lastName: String,
+  userName: {
+    type: String,
+    require: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    minLength: 3,
+    maxLength: 30,
+  },
+  password: {
+    type: String,
+    required: true,
+    minLength: 6,
+  },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true,
+    maxLength: 50,
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
+    maxLength: 50,
+  },
+});
+
+const bankSchema = new mongoose.mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
 const user = mongoose.model("User", userSchema);
-
-module.exports = user;
+const account = mongoose.model("Account", bankSchema);
+module.exports = {
+  user,
+  account,
+};
