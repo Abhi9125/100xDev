@@ -124,4 +124,34 @@ userRouter.put("/", authMiddleware, async function (req, res) {
   }
 });
 
+// Fiter Route
+userRouter.get("/bulk", async function (req, res) {
+  const filter = req.query.filter || "";
+
+  const users = await user.find({
+    // Use Regex for the partial matching.
+    $or: [
+      {
+        firstName: {
+          $regex: filter,
+        },
+      },
+      {
+        lastName: {
+          $regex: filter,
+        },
+      },
+    ],
+  });
+
+  res.json({
+    user: users.map((user) => ({
+      userName: user.userName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      _id: user._id,
+    })),
+  });
+});
+
 module.exports = userRouter;
