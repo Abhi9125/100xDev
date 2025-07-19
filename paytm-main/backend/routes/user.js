@@ -3,6 +3,7 @@ const z = require("zod");
 const user = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middleware");
 const userRouter = express.Router();
 
 const signUpSchema = z.object({
@@ -18,7 +19,7 @@ userRouter.post("/signup", async function (req, res) {
 
   // Validate the user
   const validUser = signUpSchema.safeParse(inputUser);
-  console.log(validUser);
+
   if (!validUser.success) {
     return res.status(411).json({
       message: "Email already taken / Incorrect inputs",
@@ -62,6 +63,7 @@ const signInSchema = z.object({
   userName: z.string().email(),
   password: z.string(),
 });
+
 userRouter.post("/signin", async function (req, res) {
   const inputUser = req.body;
 
@@ -95,6 +97,31 @@ userRouter.post("/signin", async function (req, res) {
   return res.status(411).json({
     message: "Error while logging in",
   });
+});
+
+const updateSchema = z.object({
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  password: z.string().optional(),
+});
+
+userRouter.put("/", authMiddleware, async function (req, res) {
+  try {
+    const validInput = updateSchema.safeParse(req.body);
+
+    if (!validInput.success) {
+      return res.status(411).send("Invalid Input");
+    }
+
+    //   Update the userId n middleware
+    const updateResult = await user.updateOne({ _id: req.userId }, req.body);
+
+    res.status(200).json({
+      message: "Updated Successfully",
+    });
+  } catch (err) {
+    res.status(411).send("Error while updating information");
+  }
 });
 
 module.exports = userRouter;
