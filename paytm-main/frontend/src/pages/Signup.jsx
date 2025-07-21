@@ -4,9 +4,13 @@ import Button from "../component/Button";
 import Heading from "../component/Heading";
 import InputBox from "../component/InputBox";
 import SubHeading from "../component/SubHeading";
+import axios from "axios";
 
 function Signup() {
-  const [input, setInput] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <div className="bg-gray-200 min-h-screen flex items-center justify-center">
@@ -16,27 +20,37 @@ function Signup() {
           <SubHeading label={"Enter your information to create an account"} />
           <InputBox
             onChange={(e) => {
-              setInput(e.target.value);
+              setFirstName(e.target.value);
             }}
             label={"First Name"}
           />
           <InputBox
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
             label={"Last Name"}
           />
           <InputBox
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => setUserName(e.target.value)}
             label={"Email"}
           />
           <InputBox
-            onChnage={(e) => setInput(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             label={"Password"}
           />
         </div>
         <div>
           <Button
-            onClick={() => {
-              <Link to="/dashboard"></Link>;
+            onClick={async () => {
+              const respose = await axios.post(
+                "http://localhost:3000/api/v1/user/signup",
+                {
+                  firstName,
+                  lastName,
+                  userName,
+                  password,
+                }
+              );
+              console.log(respose.data.token);
+              localStorage.setItem("token", respose.data.token);
             }}
             label={"Sign Up"}
           />
