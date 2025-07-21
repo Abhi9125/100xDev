@@ -30,7 +30,7 @@ accountRouter.post("/transfer", authMiddleware, async function (req, res) {
 
   // check the balace and account is availabale or not
   if (!accountDetails || accountDetails.balance < amount) {
-    await session.abortTransation();
+    await session.abortTransaction();
     return res.status(400).json({
       message: "Insufficient balance",
     });
@@ -40,7 +40,7 @@ accountRouter.post("/transfer", authMiddleware, async function (req, res) {
   const toAccount = await account.findOne({ userId: to }).session(session);
 
   if (!toAccount) {
-    await session.abortTransation();
+    await session.abortTransaction();
     return res.status(400).json({
       message: "Invalid Account",
     });
