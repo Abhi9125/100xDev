@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
+import axios from "axios";
 
 const Users = () => {
   // Replace with backend call
-  const [users, setUsers] = useState([
-    {
-      firstName: "Harkirat",
-      lastName: "Singh",
-      _id: 1,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [filter, setFilter] = useState("");
+
+  useEffect(() => {
+    const response = axios
+      .get("http://localhost:3000/api/v1/user/bulk?filter=" + filter)
+      .then((response) => {
+        setUsers(response.data.user);
+      });
+  }, [filter]);
 
   return (
     <>
@@ -19,6 +23,9 @@ const Users = () => {
           type="text"
           placeholder="Search users..."
           className="w-full px-2 py-1 border rounded border-slate-200"
+          onChange={(e) => {
+            setFilter(e.target.value);
+          }}
         ></input>
       </div>
       <div>
