@@ -1,148 +1,94 @@
-/* Step 1 - Converting the data fetching bit to a custom hook */
-// import { useEffect, useState } from "react";
-// import axios from "axios";
-// let x = 0;
-// let y = 0;
-// function useDataFechting() {
-//   const [todos, setTodos] = useState([]);
-//   console.log("value of", ++x);
+/* 4- Browser functionality related hooks */
+// import React, { useEffect, useState } from "react";
+
+// function useIsOnline() {
+//   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
+//   console.log(window.navigator.onLine);
+
 //   useEffect(() => {
-//     async function fetchData() {
-//       const res = await axios.get("http://localhost:8080/todos");
-
-//       console.log(res.data.todos);
-//       setTodos(res.data.todos);
-//     }
-
-//     fetchData();
+//     window.addEventListener("online", () => setIsOnline(true));
+//     window.addEventListener("offline", () => setIsOnline(false));
 //   }, []);
-//   return todos;
-// }
 
+//   return isOnline;
+// }
 // function App() {
-//   const todos = useDataFechting();
-//   console.log("Value of y", ++y);
-//   return (
-//     <>
-//       {todos.map((todo) => (
-//         <Track todo={todo} />
-//       ))}
-//     </>
-//   );
-// }
+//   const status = useIsOnline();
+//   console.log(status);
 
-// function Track({ todo }) {
-//   return (
-//     <div>
-//       {todo.title}
-//       <br />
-//       {todo.description}
-//     </div>
-//   );
+//   return <>{status ? "Online" : "offline"}</>;
 // }
 
 // export default App;
 
-/* Step 2 - Cleaning the hook to include a loading parameter
-What if you want to show a loader when the data is not yet fetched from the backend? */
+/* 5- Performance/Timer based */
+/* 1.  useInterval
+Create a hook that runs a certain callback function every n seconds.
+You have to implement useInterval which is being used in the code below -  */
 // import { useEffect, useState } from "react";
-// import axios from "axios";
 
-// function useDataFechting() {
-//   const [todos, setTodos] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
+// function useInterval(fn, timer) {
 //   useEffect(() => {
-//     async function fetchData() {
-//       const res = await axios.get("http://localhost:8080/todos");
-
-//       console.log(res.data.todos);
-//       setTodos(res.data.todos);
-//       setLoading(false);
-//     }
-
-//     fetchData();
+//     setInterval(() => {
+//       fn();
+//     }, timer);
 //   }, []);
-//   return [todos, loading];
 // }
-
 // function App() {
-//   const [todos, loading] = useDataFechting();
-//   return (
-//     <>
-//       {loading
-//         ? "Loading"
-//         : todos.map((todo) => {
-//             return <Track todo={todo} />;
-//           })}
-//     </>
-//   );
-// }
+//   const [count, setCount] = useState(0);
 
-// function Track({ todo }) {
-//   return (
-//     <div>
-//       {todo.title}
-//       <br />
-//       {todo.description}
-//     </div>
-//   );
+//   useInterval(() => {
+//     setCount((c) => c + 1);
+//   }, 1000);
+
+//   return <>Timer is at {count}</>;
 // }
 
 // export default App;
 
-/* Step - 3 Auto refreshing hook, what if you want to keep polling the backend every
-n seconds? n needs to be passed in as an input to the hook
-*/
-import { useEffect, useState } from "react";
+/* . 2. useDebounce
+Create a hook that debounces a value given
+1. The value that needs to be debounced
+2. The interval at which the value should be debounced. */
+
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-
-function useDataFechting(n) {
-  const [todos, setTodos] = useState([]);
-  const [loading, setLoading] = useState(true);
+function useDebounce(inputValue, time) {
+  const [searchResult, setSearchResult] = useState([]);
 
   async function fetchData() {
-    const res = await axios.get("http://localhost:8080/todos");
-
-    console.log(res.data.todos);
-    setTodos(res.data.todos);
-    setLoading(false);
+    console.log("fetching the api....");
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = setTimeout(() => {
       fetchData();
-    }, n * 1000);
+    }, time);
 
-    fetchData();
     return () => {
-      clearInterval(timer);
+      clearTimeout(timer);
     };
-  }, [n]);
-  return [todos, loading];
+  }, [inputValue]);
+
+  return;
 }
 
-function App() {
-  const [todos, loading] = useDataFechting(5);
-  return (
-    <>
-      {loading
-        ? "Loading"
-        : todos.map((todo) => {
-            return <Track todo={todo} />;
-          })}
-    </>
-  );
-}
+const SearchBar = () => {
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, 500); // 500 milliseconds debounce delay
 
-function Track({ todo }) {
+  // Use the debouncedValue in your component logic, e.g., trigger a search API call via a useEffect
+
   return (
     <div>
-      {todo.title}
-      <br />
-      {todo.description}
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Search..."
+      />
     </div>
   );
-}
+};
 
-export default App;
+export default SearchBar;
