@@ -1,56 +1,137 @@
+/* Step 1 - Converting the data fetching bit to a custom hook */
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// let x = 0;
+// let y = 0;
+// function useDataFechting() {
+//   const [todos, setTodos] = useState([]);
+//   console.log("value of", ++x);
+//   useEffect(() => {
+//     async function fetchData() {
+//       const res = await axios.get("http://localhost:8080/todos");
+
+//       console.log(res.data.todos);
+//       setTodos(res.data.todos);
+//     }
+
+//     fetchData();
+//   }, []);
+//   return todos;
+// }
+
+// function App() {
+//   const todos = useDataFechting();
+//   console.log("Value of y", ++y);
+//   return (
+//     <>
+//       {todos.map((todo) => (
+//         <Track todo={todo} />
+//       ))}
+//     </>
+//   );
+// }
+
+// function Track({ todo }) {
+//   return (
+//     <div>
+//       {todo.title}
+//       <br />
+//       {todo.description}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+/* Step 2 - Cleaning the hook to include a loading parameter
+What if you want to show a loader when the data is not yet fetched from the backend? */
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+
+// function useDataFechting() {
+//   const [todos, setTodos] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     async function fetchData() {
+//       const res = await axios.get("http://localhost:8080/todos");
+
+//       console.log(res.data.todos);
+//       setTodos(res.data.todos);
+//       setLoading(false);
+//     }
+
+//     fetchData();
+//   }, []);
+//   return [todos, loading];
+// }
+
+// function App() {
+//   const [todos, loading] = useDataFechting();
+//   return (
+//     <>
+//       {loading
+//         ? "Loading"
+//         : todos.map((todo) => {
+//             return <Track todo={todo} />;
+//           })}
+//     </>
+//   );
+// }
+
+// function Track({ todo }) {
+//   return (
+//     <div>
+//       {todo.title}
+//       <br />
+//       {todo.description}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+/* Step - 3 Auto refreshing hook, what if you want to keep polling the backend every
+n seconds? n needs to be passed in as an input to the hook
+*/
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useTodos(n) {
+function useDataFechting(n) {
   const [todos, setTodos] = useState([]);
-  const [simmer, setSimmer] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     axios.get("http://localhost:8080/todos").then((res) => {
-  //       setTodos(res.data.todos);
-  //       setSimmer(false);
-  //     });
-  //   }, n * 1000);
+  async function fetchData() {
+    const res = await axios.get("http://localhost:8080/todos");
 
-  //   axios.get("http://localhost:8080/todos").then((res) => {
-  //     setTodos(res.data.todos);
-  //     setSimmer(false);
-  //   });
-  // }, [n]);
-
-  // ----------------------------------
-  /* but one problem in the above code what if 'N' is dynamic. example inisily 'N' = 5, so 
-  'N' is 5 setInterval timer attach with 5sec and then after sometime 'N' = 8 but the time with 
-  setInterval is 5 so to fix this consition we clear previous setInterval. 
-  */
+    console.log(res.data.todos);
+    setTodos(res.data.todos);
+    setLoading(false);
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
-      axios.get("http://localhost:8080/todos").then((res) => {
-        setTodos(res.data.todos);
-        setSimmer(false);
-      });
+      fetchData();
     }, n * 1000);
 
-    axios.get("http://localhost:8080/todos").then((res) => {
-      setTodos(res.data.todos);
-      setSimmer(false);
-    });
-
+    fetchData();
     return () => {
       clearInterval(timer);
     };
   }, [n]);
-
-  return [todos, simmer];
+  return [todos, loading];
 }
 
 function App() {
-  const [todos, simmer] = useTodos(5);
-
+  const [todos, loading] = useDataFechting(5);
   return (
-    <>{simmer ? "Loading..." : todos.map((todo) => <Track todo={todo} />)}</>
+    <>
+      {loading
+        ? "Loading"
+        : todos.map((todo) => {
+            return <Track todo={todo} />;
+          })}
+    </>
   );
 }
 
