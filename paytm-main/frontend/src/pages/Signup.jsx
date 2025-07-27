@@ -5,12 +5,14 @@ import Heading from "../component/Heading";
 import InputBox from "../component/InputBox";
 import SubHeading from "../component/SubHeading";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div className="bg-gray-200 min-h-screen flex items-center justify-center">
@@ -51,6 +53,9 @@ function Signup() {
               );
               console.log(respose.data.token);
               localStorage.setItem("token", respose.data.token);
+              console.log("Signup success, navigating now...");
+              navigate("/dashboard");
+              console.log("Navigation attempted");
             }}
             label={"Sign Up"}
           />
