@@ -2,16 +2,116 @@
 import { Client } from "pg";
 
 const client = new Client({
-  connectionString: "postgresql://postgres:mysecretpassword@localhost/postgres",
+  connectionString:
+    "postgresql://postgres:mysecretpassword@localhost:5433/postgres",
 });
 
-/* async function createAndInsertTable() {
+// 1. Create the user Table---------------------------------------------
+
+/* async function createTable() {
+  await client.connect();
+
+  const result = await client.query(`
+    CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) UNIQUE NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  console.log(result);
+}
+
+createTable(); */
+
+// -------------------------------------------------------------------------------------------
+// 2.Insert data unsecure way in this way intruder insert the sql commant and distroy the database it called sql injection
+// to resolve this problem we use the 2nd way to insert the data
+// -------------------------------------------------------------------------------------------
+// 1 way
+/* async function InserData(username: string, email: string, password: string) {
+  await client.connect();
+  const result = await client.query(`
+        INSERT INTO users (username, email, password)
+        VALUES ('${username}', '${email}', '${password}')
+    `);
+  console.log(result);
+} */
+
+// 2 way
+/* async function InserData(username: string, email: string, password: string) {
+  await client.connect();
+  const result = await client.query(
+    `
+        INSERT INTO users (username, email, password)
+        VALUES ($1, $2, $3)`,
+    [username, email, password]
+  );
+  console.log(result);
+}
+
+InserData("abhi3", "abhi3.singh@gmail.com", "dlk3"); */
+
+// ----------------------------------------------------------------------------------
+// 3. Update the users table password
+// ----------------------------------------------------------------------------------
+/* async function UpdateTable(password: string) {
+  await client.connect();
+  const result = await client.query(
+    `UPDATE users
+    SET password = $1
+    WHERE email = 'abhi112345.singh@gmail.com'
+    `,
+    [password]
+  );
+  console.log(result);
+}
+
+UpdateTable("AbhiSingh"); */
+
+// -----------------------------------------------------------------------------------
+// 4. Delete the user table
+// -----------------------------------------------------------------------------------
+/* async function DeleteUserColumn() {
+  await client.connect();
+  const result = await client.query(
+    `DELETE FROM users
+   WHERE id = 1
+   `
+  );
+  console.log(result);
+}
+
+DeleteUserColumn(); */
+
+// ------------------------------------------------------------------------------------
+// 5. Read user Table
+// -----------------------------------------------------------------------------------
+/* async function ReadUser() {
+  await client.connect();
+  const result = await client.query(
+    `SELECT * FROM users
+   WHERE id = 2
+   `
+  );
+  console.log(result);
+}
+
+ReadUser(); */
+
+// ------------------------------------------------------------------------------------
+// 6. Create addresses table make it relationship with users table
+// ------------------------------------------------------------------------------------
+
+/* async function CreateAddressesTable() {
   await client.connect();
   await client.query(`
-    DROP TABLE IF EXISTS addresses2;
+    DROP TABLE IF EXISTS addresses;
     `);
 
   console.log("Tabe drop");
+  
   await client.query(`
     CREATE TABLE addresses(
     id SERIAL PRIMARY KEY,
@@ -35,10 +135,12 @@ const client = new Client({
   console.log("Table Inserted");
 }
 
-createAndInsertTable(); */
+CreateAddressesTable();
+ */
 
-// ---- Get address details using user id
-
+// ---------------------------------------------------------------
+// Get address details using user id
+// ---------------------------------------------------------------
 /* async function getAddressesByUserId(userId: number) {
   await client.connect();
 
@@ -52,24 +154,11 @@ createAndInsertTable(); */
   console.log(result.rows);
 }
 
-getAddressesByUserId(3);
- */
+getAddressesByUserId(3); */
 
-/* async function InsertValue(userId: number) {
-  await client.connect();
-
-  await client.query(`
-    INSERT INTO addresses(user_id , city , country, street, pincode)
-    VALUES (3, 'Robertsganj11', 'India11', 'CivilLine11', '231216')
-  `);
-
-  console.log("Table Inserted");
-}
-
-InsertValue(3); */
-
-// Joins
-
+// -------------------------------------------------------------------------
+// Join
+// ------------------------------------------------------------------------
 async function GettingAddressByJoin(userId: number) {
   try {
     await client.connect();
@@ -93,4 +182,4 @@ async function GettingAddressByJoin(userId: number) {
     console.error("Error during fetching", err);
   }
 }
-GettingAddressByJoin(1);
+GettingAddressByJoin(3);
