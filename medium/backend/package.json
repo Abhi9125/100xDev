@@ -10,6 +10,7 @@
     "@prisma/client": "^6.15.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "100x-zod-common": "^1.0.0",
+    "cors": "^2.8.5",
     "hono": "^4.9.4",
     "prisma": "^6.15.0"
   },
