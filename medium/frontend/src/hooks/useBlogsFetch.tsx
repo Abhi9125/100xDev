@@ -32,3 +32,42 @@ export const useBlogFetch = (): { loading: boolean; allBlogs: Blog[] } => {
 
   return { loading, allBlogs };
 };
+
+export interface BlogContentType {
+  post: {
+    title: string;
+    content: string;
+    id: string;
+    author: {
+      name: string;
+    };
+  };
+}
+
+export const useBlogContentFetch = ({ id }: { id: string }) => {
+  const [loading, setLoading] = useState(true);
+
+  const [blogContent, setBlogContent] = useState<BlogContentType | null>(null);
+
+  useEffect(() => {
+    const getBlogContent = async () => {
+      const res = await axios(`${BACKEND_URL}/api/v1/blog/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userInfo")}`,
+        },
+      });
+
+      console.log(res.data);
+
+      setBlogContent(res.data);
+      setLoading(false);
+    };
+
+    getBlogContent();
+  }, []);
+
+  return {
+    loading,
+    blogContent,
+  };
+};

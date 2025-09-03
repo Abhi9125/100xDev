@@ -66,6 +66,6 @@ user.post("/signin", async (c) => {
     });
   }
 
-  const jwt = await sign({ id: user.id }, c.env.JWT_TOKENS);
-  return c.json({ jwt });
+  const token = await sign({ id: user.id }, c.env.JWT_TOKENS);
+  return c.json({ token });
 });

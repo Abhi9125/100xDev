@@ -1,26 +1,18 @@
-import { Appbar } from "../components/Appbar";
-import { BlogCart } from "../components/BlogCart";
-import { useBlogFetch } from "../hooks/useBlogsFetch";
+import { useParams } from "react-router-dom";
+import { BlogContent } from "../components/BlogContent";
+import { useBlogContentFetch } from "../hooks/useBlogsFetch";
 
 export const Blog = () => {
-  const { loading, allBlogs } = useBlogFetch();
+  const { id } = useParams();
 
-  if (loading == true) {
-    return <div>loading....</div>;
+  const { loading, blogContent } = useBlogContentFetch({ id: id || "" });
+  if (loading || !blogContent) {
+    return <div>Loading....</div>;
   }
 
-  console.log(allBlogs);
   return (
     <div>
-      <Appbar userName="abhi" />
-      {allBlogs.map((blog) => (
-        <BlogCart
-          title={blog.title}
-          content={blog.content}
-          userName={blog.author.name}
-          publishDate="02/09"
-        />
-      ))}
+      <BlogContent blogContent={blogContent} />
     </div>
   );
 };
