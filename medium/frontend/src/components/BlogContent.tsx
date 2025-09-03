@@ -1,4 +1,5 @@
 import type { BlogContentType } from "../hooks/useBlogsFetch";
+import { Appbar } from "./Appbar";
 
 export const BlogContent = ({
   blogContent,
@@ -6,15 +7,18 @@ export const BlogContent = ({
   blogContent: BlogContentType;
 }) => {
   return (
-    <div className="flex justify-between mx-10 mt-4">
-      <div>
-        <p>{blogContent.post.title}</p>
+    <div>
+      <Appbar userName="abhi" />
+      <div className="flex justify-between mx-10 mt-4">
+        <div>
+          <p>{blogContent.post.title}</p>
 
-        <p>{blogContent.post.content}</p>
-      </div>
-      <div>
-        <p>{blogContent.post.author.name}</p>
-        <p>i am full stack developer</p>
+          <p>{blogContent.post.content}</p>
+        </div>
+        <div>
+          <p>{blogContent.post.author.name}</p>
+          <p>i am full stack developer</p>
+        </div>
       </div>
     </div>
   );

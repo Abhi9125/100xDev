@@ -1,7 +1,21 @@
+import { useNavigate } from "react-router-dom";
+
 export const Appbar = ({ userName }: { userName: string }) => {
+  const navigate = useNavigate();
+  function handleClick() {
+    navigate("/publish");
+  }
+
   return (
-    <div className="flex justify-between mx-4">
+    <div className="flex justify-between mx-4 my-4">
       <div>Medium</div>
+      <button
+        type="button"
+        className="text-white bg-green-700 ml-100 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 "
+        onClick={handleClick}
+      >
+        Create
+      </button>
       <Avtor userName={userName} />
     </div>
   );
