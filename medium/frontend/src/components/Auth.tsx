@@ -19,14 +19,12 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       );
 
       const data = response.data;
-      console.log(data);
-      localStorage.getItem(data.token);
+      localStorage.setItem("userInfo", data.token);
       navigate("/blogs");
     } catch {
       alert("Something went wrong!!");
     }
   }
-  console.log(inputValue);
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
@@ -53,16 +51,20 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
           });
         }}
       />
-      <LabelAndInput
-        labelHeading="Name"
-        placeholder="Enter your name"
-        onchange={(e) => {
-          setInputValue({
-            ...inputValue,
-            name: e.target.value,
-          });
-        }}
-      />
+      {type === "signup" ? (
+        <LabelAndInput
+          labelHeading="Name"
+          placeholder="Enter your name"
+          onchange={(e) => {
+            setInputValue({
+              ...inputValue,
+              name: e.target.value,
+            });
+          }}
+        />
+      ) : (
+        ""
+      )}
       <LabelAndInput
         labelHeading="Password"
         placeholder="password"
