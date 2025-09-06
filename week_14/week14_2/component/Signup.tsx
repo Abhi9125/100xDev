@@ -1,17 +1,20 @@
 "use client";
 
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { ChangeEventHandler, useState } from "react";
 
 export function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useRouter();
 
   async function HandleSignup() {
     const res = await axios.post("http://172.26.128.1:3000/api/user", {
       username,
       password,
     });
+    navigate.push("/");
     console.log(await res.data);
   }
   return (
