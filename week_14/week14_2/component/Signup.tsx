@@ -10,7 +10,7 @@ export function Signup() {
   const navigate = useRouter();
 
   async function HandleSignup() {
-    const res = await axios.post("http://172.26.128.1:3000/api/user", {
+    const res = await axios.post("http://localhost:3000/api/user", {
       username,
       password,
     });
