@@ -7,14 +7,14 @@ export const Appbar = ({ userName }: { userName: string }) => {
   }
 
   return (
-    <div className="flex justify-between mx-4 my-4">
+    <div className="flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-10">
       <Link to={"/allblogs"}>
         <div>Medium</div>
       </Link>
 
       <button
         type="button"
-        className="text-white bg-green-700 ml-100 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 "
+        className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition "
         onClick={handleClick}
       >
         Create Blog

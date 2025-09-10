@@ -1,12 +1,12 @@
 export const Quotes = () => {
   return (
-    <div className="bg-slate-50 h-screen flex justify-center flex-col">
-      <div className="text-3xl flex-col justify-center font-bold m-4">
+    <div className="max-w-lg text-center p-6">
+      <div className="text-xl italic text-gray-700">
         "The customer service i receive was exceptional.The support team went
         above and beyond to address my concern."
       </div>
-      <div className="mx-4 mb-0">Jules Windfiels</div>
-      <div className="mx-4 mt-0">CEO, Acmo Inc.</div>
+      <div className="mt-4 text-gray-500 font-semibold">Jules Windfiels</div>
+      <div className="text-gray-500">CEO, Acmo Inc.</div>
     </div>
   );
 };

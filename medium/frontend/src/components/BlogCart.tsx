@@ -16,14 +16,16 @@ export const BlogCart = ({
 }: blogCartType) => {
   return (
     <Link to={"/blog/" + id}>
-      <div className="flex flex-col justify-center border-b mt-4 cursor-pointer">
-        <div className="flex">
+      <div className="bg-white p-5 rounded-lg shadow hover:shadow-lg transition cursor-pointer border border-gray-200">
+        <div className="flex items-center mb-4">
           <Avtor userName={userName} />
-          <p className="mx-2 mt-3">{publishDate}</p>
+          <p className="ml-3 text-sm text-gray-500">{publishDate}</p>
         </div>
-        <div>{title}</div>
-        <div>{content.slice(0, 100)} ...</div>
-        <div>{content.length / 100} mins read </div>
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">{title}</h2>
+        <div className="text-gray-600 mb-3">{content.slice(0, 100)} ...</div>
+        <div className="text-sm text-gray-400">
+          {content.length / 100} mins read{" "}
+        </div>
       </div>
     </Link>
   );
