@@ -29,14 +29,17 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
-      <div>Create an account</div>
-      <div>
+    <div className="max-w-md w-full space-y-6 p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-bold text-gray-800 text-center">
+        {type === "signup" ? "Create an Account" : "Welcome Back"}
+      </h2>
+
+      <div className="text-sm text-gray-600 text-center">
         {type === "signin" ? "Already have an account?" : "New one"}
         <span>
           <Link
             to={type === "signin" ? "/signup" : "/signin"}
-            className="mx-2 font-bold underline underline-offset-1"
+            className="ml-2 text-blue-600 font-semibold hover:underline"
           >
             {type === "signin" ? "signup" : "signin"}
           </Link>
@@ -69,7 +72,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       )}
       <LabelAndInput
         labelHeading="Password"
-        placeholder="password"
+        placeholder="Password"
         type="password"
         onchange={(e) => {
           setInputValue({
@@ -105,13 +108,13 @@ function LabelAndInput({
 }: LabelAndInputProps) {
   return (
     <div>
-      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+      <label className="block mb-1 text-gray-700 font-medium">
         {labelHeading}
       </label>
       <input
         type={type || "text"}
         id="first_name"
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         placeholder={placeholder}
         onChange={onchange}
         required
