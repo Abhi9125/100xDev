@@ -3,7 +3,7 @@ import { Signin } from "./pages/Signin";
 import { Signup } from "./pages/Signup";
 import { AllBlogs } from "./pages/AllBlogs";
 import { Blog } from "./pages/Blog";
-import { Publish } from "./pages/publish";
+import { Publish } from "./pages/Publish";
 
 const App = () => {
   return (

@@ -35,7 +35,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         {type === "signin" ? "Already have an account?" : "New one"}
         <span>
           <Link
-            to={type === "signin" ? "signup" : "signin"}
+            to={type === "signin" ? "/signup" : "/signin"}
             className="mx-2 font-bold underline underline-offset-1"
           >
             {type === "signin" ? "signup" : "signin"}
@@ -84,7 +84,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         className="text-white my-4 w-full bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         onClick={handleRoutes}
       >
-        Dark
+        {type === "signup" ? "SignUp" : "SignIn"}
       </button>
     </div>
   );
