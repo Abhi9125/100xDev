@@ -20,7 +20,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       );
 
       const data = response.data;
-      console.log(data);
+
       localStorage.setItem("userInfo", data.token);
       navigate("/allblogs");
     } catch {
@@ -35,7 +35,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
       </h2>
 
       <div className="text-sm text-gray-600 text-center">
-        {type === "signin" ? "Already have an account?" : "New one"}
+        {type === "signin" ? "New One?" : "Already have an account?"}
         <span>
           <Link
             to={type === "signin" ? "/signup" : "/signin"}

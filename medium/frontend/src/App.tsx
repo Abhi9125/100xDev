@@ -4,6 +4,7 @@ import { Signup } from "./pages/Signup";
 import { AllBlogs } from "./pages/AllBlogs";
 import { Blog } from "./pages/Blog";
 import { Publish } from "./pages/Publish";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -13,9 +14,30 @@ const App = () => {
           <Route path="/" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/allblogs" element={<AllBlogs />} />
-          <Route path="/blog/:id" element={<Blog />}></Route>
-          <Route path="/publish" element={<Publish />}></Route>
+          <Route
+            path="/allblogs"
+            element={
+              <ProtectedRoute>
+                <AllBlogs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blog/:id"
+            element={
+              <ProtectedRoute>
+                <Blog />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/publish"
+            element={
+              <ProtectedRoute>
+                <Publish />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>

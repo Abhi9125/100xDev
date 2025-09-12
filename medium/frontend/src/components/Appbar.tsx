@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 export const Appbar = ({ userName }: { userName: string }) => {
   const navigate = useNavigate();
@@ -9,7 +11,7 @@ export const Appbar = ({ userName }: { userName: string }) => {
   return (
     <div className="flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-10">
       <Link to={"/allblogs"}>
-        <div>Medium</div>
+        <div className="ml-5 font-extrabold">Medium</div>
       </Link>
 
       <button
@@ -25,11 +27,22 @@ export const Appbar = ({ userName }: { userName: string }) => {
 };
 
 function Avtor({ userName }: { userName: string }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function handleLogOut() {
+    return isModalOpen === true ? setIsModalOpen(false) : setIsModalOpen(true);
+  }
   return (
-    <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-      <span className="font-medium text-gray-600 dark:text-gray-300">
-        {userName[0]}
-      </span>
+    <div>
+      <div
+        className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600"
+        onClick={handleLogOut}
+      >
+        <span className="font-medium text-gray-600 dark:text-gray-300">
+          {userName[0]}
+        </span>
+      </div>
+      <div>{isModalOpen && <Modal />}</div>
     </div>
   );
 }
