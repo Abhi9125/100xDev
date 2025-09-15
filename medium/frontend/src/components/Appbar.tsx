@@ -43,7 +43,7 @@ function Avtor({ userName }: { userName: string }) {
         onClick={handleLogOut}
       >
         <span className="font-medium text-gray-600 dark:text-gray-300">
-          {userName}
+          {userName.toUpperCase()}
         </span>
       </div>
       <div>{isModalOpen && <Modal />}</div>
