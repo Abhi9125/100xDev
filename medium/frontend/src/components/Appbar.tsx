@@ -6,7 +6,6 @@ import { UseFetchUserName } from "../hooks/useBlogsFetch";
 export const Appbar = () => {
   const navigate = useNavigate();
   const [userName]: any = UseFetchUserName();
-  console.log(userName);
 
   function handleClick() {
     navigate("/publish");
@@ -43,7 +42,7 @@ function Avtor({ userName }: { userName: string }) {
         onClick={handleLogOut}
       >
         <span className="font-medium text-gray-600 dark:text-gray-300">
-          {userName.toUpperCase()}
+          {userName && userName.toUpperCase()}
         </span>
       </div>
       <div>{isModalOpen && <Modal />}</div>
