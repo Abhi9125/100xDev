@@ -8,7 +8,7 @@ export const BlogContent = ({
 }) => {
   return (
     <div>
-      <Appbar userName="abhi" />
+      <Appbar />
       <div className="max-w-5xl mx-auto px-6 py-8 bg-white rounded-lg shadow-md mt-6">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column: Blog Title + Content */}

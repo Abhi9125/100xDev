@@ -26,7 +26,7 @@ export const Publish = () => {
   }
   return (
     <div className="min-h-screen bg-gray-50">
-      <Appbar userName="abhi" />
+      <Appbar />
 
       <div className="max-w-3xl mx-auto px-6 py-8 bg-white rounded-lg shadow-md mt-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">
