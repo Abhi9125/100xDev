@@ -13,7 +13,6 @@ export const AllBlogs = () => {
     );
   }
 
-  console.log(allBlogs);
   return (
     <div className="min-h-screen bg-gray-50">
       <Appbar />

@@ -57,8 +57,6 @@ export const useBlogContentFetch = ({ id }: { id: string }) => {
         },
       });
 
-      console.log(res.data);
-
       setBlogContent(res.data);
       setLoading(false);
     };

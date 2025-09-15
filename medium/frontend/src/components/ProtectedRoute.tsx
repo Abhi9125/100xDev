@@ -10,7 +10,5 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (!token) {
     return <Navigate to="/" replace />;
   }
-
-  console.log(token);
   return children;
 }
