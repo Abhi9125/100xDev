@@ -71,3 +71,23 @@ export const useBlogContentFetch = ({ id }: { id: string }) => {
     blogContent,
   };
 };
+
+export const UseFetchUserName = () => {
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await axios.get(`${BACKEND_URL}/api/v1/user/details`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userInfo")}`,
+        },
+      });
+      const actualData = await res.data;
+      setUserName(actualData.getUserName.name);
+    };
+
+    getUser();
+  }, []);
+
+  return userName;
+};

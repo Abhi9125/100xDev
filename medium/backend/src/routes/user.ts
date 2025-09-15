@@ -1,7 +1,7 @@
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { PrismaClient } from "../generated/prisma/edge";
 import { Hono } from "hono";
-import { sign } from "hono/jwt";
+import { sign, verify } from "hono/jwt";
 import { signupInput, signinInput } from "100x-zod-common";
 
 export const user = new Hono<{
@@ -9,7 +9,38 @@ export const user = new Hono<{
     DATABASE_URL: string;
     JWT_TOKENS: string;
   };
+  Variables: {
+    userId: string;
+  };
 }>();
+
+const UserDetailMiddleware = async (c: any, next: () => Promise<void>) => {
+  const JwtSring = c.req.header("Authorization") || "";
+
+  const token = JwtSring.split(" ")[1];
+  console.log(token);
+
+  try {
+    const verifyToken = await verify(token, c.env.JWT_TOKENS);
+
+    console.log(verifyToken);
+
+    if (verifyToken.id) {
+      c.set("userId", String(verifyToken.id));
+      await next();
+    } else {
+      c.status(403);
+      return c.json({
+        message: "get error",
+      });
+    }
+  } catch (e) {
+    c.status(403);
+    return c.json({
+      err: e,
+    });
+  }
+};
 user.post("/signup", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -68,4 +99,27 @@ user.post("/signin", async (c) => {
 
   const token = await sign({ id: user.id }, c.env.JWT_TOKENS);
   return c.json({ token });
+});
+
+user.get("/details", UserDetailMiddleware, async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = c.get("userId");
+
+  console.log(userId);
+
+  const getUserName = await prisma.user.findFirst({
+    where: {
+      id: userId,
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  return c.json({
+    getUserName,
+  });
 });

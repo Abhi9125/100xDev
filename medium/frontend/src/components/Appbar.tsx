@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Modal from "./Modal";
+import { UseFetchUserName } from "../hooks/useBlogsFetch";
 
-export const Appbar = ({ userName }: { userName: string }) => {
+export const Appbar = () => {
   const navigate = useNavigate();
+  const [userName]: any = UseFetchUserName();
+  console.log(userName);
+
   function handleClick() {
     navigate("/publish");
   }
@@ -11,7 +15,7 @@ export const Appbar = ({ userName }: { userName: string }) => {
   return (
     <div className="flex items-center justify-between bg-white shadow-md p-4 sticky top-0 z-10">
       <Link to={"/allblogs"}>
-        <div className="ml-5 font-extrabold">Medium</div>
+        <div className="ml-5 font-extrabold">Think&Write</div>
       </Link>
 
       <button
@@ -39,7 +43,7 @@ function Avtor({ userName }: { userName: string }) {
         onClick={handleLogOut}
       >
         <span className="font-medium text-gray-600 dark:text-gray-300">
-          {userName[0]}
+          {userName}
         </span>
       </div>
       <div>{isModalOpen && <Modal />}</div>

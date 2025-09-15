@@ -16,7 +16,7 @@ export const AllBlogs = () => {
   console.log(allBlogs);
   return (
     <div className="min-h-screen bg-gray-50">
-      <Appbar userName="abhi" />
+      <Appbar />
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         {allBlogs.map((blog) => (
           <BlogCart
