@@ -9,8 +9,22 @@ import { client } from "..";
  *   name: string
  * }
  */
-export async function createUser(username: string, password: string, name: string) {
-    
+export async function createUser(
+  username: string,
+  password: string,
+  name: string
+) {
+  await client.connect();
+
+  const result = await client.query(
+    `
+        INSERT INTO users (username, password, name)
+        VALUE ($1, $2, $3)
+        `,
+    [username, password, name]
+  );
+
+  console.log(result);
 }
 
 /*
@@ -21,6 +35,4 @@ export async function createUser(username: string, password: string, name: strin
  *   name: string
  * }
  */
-export async function getUser(userId: number) {
-    
-}
+export async function getUser(userId: number) {}

@@ -9,9 +9,11 @@ import { client } from "..";
  *  id: number
  * }
  */
-export async function createTodo(userId: number, title: string, description: string) {
-    
-}
+export async function createTodo(
+  userId: number,
+  title: string,
+  description: string
+) {}
 /*
  * mark done as true for this specific todo.
  * Should return a todo object
@@ -22,9 +24,7 @@ export async function createTodo(userId: number, title: string, description: str
  *  id: number
  * }
  */
-export async function updateTodo(todoId: number) {
-
-}
+export async function updateTodo(todoId: number) {}
 
 /*
  *  Get all the todos of a given user
@@ -36,6 +36,4 @@ export async function updateTodo(todoId: number) {
  *  id: number
  * }]
  */
-export async function getTodos(userId: number) {
-
-}
+export async function getTodos(userId: number) {}
